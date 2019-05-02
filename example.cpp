@@ -1,23 +1,12 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <string>
-
 #include "cprogressbar.h"
 
 int main(int argc, char const *argv[])
 {
-  ConsoleProgressBar pb;
-  unsigned int percent, total = 987654321; //the total number of loop iterations until completion
-
-  percent = std::floor(total/100);
+  unsigned int total = 98765432; //the total number of loop iterations until completion
+  ConsoleProgressBar pb(total, 25, true);
 
   for(unsigned int i = 0; i < total; i++){
-    if(i%percent == 0)
-    {
-      pb.tick();
-      pb.print();
-    }
+    pb.tick(i);
   }
 
   std::cout << std::endl;

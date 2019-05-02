@@ -1,28 +1,44 @@
 #include "cprogressbar.h"
 
-ConsoleProgressBar::ConsoleProgressBar (unsigned int width) {
-  total = width;
-  bar = (char *)malloc(total*sizeof(unsigned char));
-  for (unsigned int i = 0; i < total; ++i)
+ConsoleProgressBar::ConsoleProgressBar (unsigned int _nsteps, unsigned int _width, bool _dispPercent) {
+  width = _width;
+  steps = _nsteps;
+  displayPercentage = _dispPercent;
+
+  if(displayPercentage)
+    backPrintOffset = 6;
+
+  bar = (char *)malloc(width*sizeof(unsigned char));
+  for (unsigned int i = 0; i < width; ++i)
     bar[i] = ' ';
 }
 
-ConsoleProgressBar::ConsoleProgressBar () : ConsoleProgressBar::ConsoleProgressBar (100) {}
+ConsoleProgressBar::ConsoleProgressBar (unsigned int _nsteps, unsigned int _width) : ConsoleProgressBar::ConsoleProgressBar (_nsteps, _width, false) {}
+
+ConsoleProgressBar::ConsoleProgressBar (unsigned int _nsteps) : ConsoleProgressBar::ConsoleProgressBar (_nsteps, 100, false) {}
 
 void ConsoleProgressBar::print (){
-  for (unsigned int i = 0; i < total+3; ++i)
+  if(progress == width && displayPercentage)
+    backPrintOffset = 10;
+
+  for (unsigned int i = 0; i < width+backPrintOffset; ++i)
     std::cout << "\b";
   std::cout << startChar;
   std::cout << bar;
   std::cout << endChar;
+  if(displayPercentage)
+    std::cout << ' ' << progress*100/width << '%';
   std::cout.flush();
   std::this_thread::sleep_for(std::chrono::milliseconds(1));
-
 }
 
-void ConsoleProgressBar::tick() {
-  bar[progress] = tickChar;
-  if(progress < total)
-    progress++;
-  print();
+void ConsoleProgressBar::tick(unsigned int currentStep) {
+  percent = std::floor(steps/width);
+  if(currentStep%percent == 0) {
+    if(progress < width) {
+      bar[progress] = tickChar;
+      progress++;
+    }
+    print();
+  }
 }
