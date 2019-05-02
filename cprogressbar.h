@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 
 #ifndef CPROGRESSBAR_H_
 # define CPROGRESSBAR_H_
