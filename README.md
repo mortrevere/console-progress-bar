@@ -21,8 +21,24 @@ int main(int argc, char const *argv[])
 }
 ```
 
-The full prototype to instantiate a ConsoleProgressBar is `ConsoleProgressBar pb(unsigned int _nsteps, unsigned int _width, bool _displayPercentage);`.
+The full prototype to instantiate a ConsoleProgressBar is :
 
-Filling the progress bar is done by calling its `.tick(unsigned int _currentStep)`. The bar is at 100% when `_currentStep == _nsteps`. 
+```cpp
+ConsoleProgressBar pb(unsigned int _nsteps, unsigned int _width = 100, bool _displayPercentage = false);
+```
+
+Filling the progress bar is done by calling its `tick` method : 
+
+```cpp
+.tick(unsigned int _currentStep)
+```.
+
+The bar is at 100% when `_currentStep == _nsteps`. 
 
 See the [example](example.cpp).
+
+## Try it
+
+```
+git clone https://github.com/mortrevere/console-progress-bar.git && cd console-progress-bar && ./compile-run-example.sh
+```
